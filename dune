@@ -1,0 +1,10 @@
+(env
+  ( _ (flags (:standard -warn-error -32 ))
+  )
+)
+
+(executable
+ (public_name main)
+ (name main)
+ (libraries bigraph tracking_bigraph )
+)
