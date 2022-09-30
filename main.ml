@@ -396,6 +396,10 @@ let ttsMode init_state =
 	let num_of_trans,checked,unchecked,num_of_steps = Gen.explore_ss_slim ~trans_file_name:"transitions.csv" ~states_file_name:"states.csv" init_state [mov;init;mark;download] 777
 	in
 		Printf.printf "TBRS: %d transitions found, %d checked states, %d unchecked states, %d steps\n" num_of_trans (List.length checked) (List.length unchecked) num_of_steps;;
+let parttsMode init_state =
+	let num_of_trans,checked,unchecked,num_of_steps = Gen.parexplore_ss_slim ~trans_file_name:"transitions.csv" ~states_file_name:"states.csv" init_state [mov;init;mark;download] 777
+	in
+		Printf.printf "TBRS parallel: %d transitions found, %d checked states, %d unchecked states, %d steps\n" num_of_trans (List.length checked) (List.length unchecked) num_of_steps;;
 
 let ltsMode init_state =
 	let _,stats = Brs.bfs ~s0:init_state ~priorities:[Brs.P_class [mov_vanila;init_vanila;mark_vanila;download_vanila] ] ~predicates:[] ~max:(80000) ~iter_f: (fun _ _ -> () )
@@ -404,10 +408,9 @@ let ltsMode init_state =
 
 let modeFun mode initState = 
 	match mode with
-	| "tts" -> 
-		Printf.printf "TTS \n" ; ttsMode initState
-	| "lts" -> 
-		Printf.printf "LTS \n" ; ltsMode initState
+	| "tts" -> Printf.printf "TTS \n" ; ttsMode initState
+	| "ptts" -> Printf.printf "TTS-par \n" ; parttsMode initState
+	| "lts" -> Printf.printf "LTS \n" ; ltsMode initState
 	| _ -> Printf.printf "Unknown mode, exiting \n" ;;
 
 modeFun Sys.argv.(1) (initStateFun Sys.argv.(2));;
