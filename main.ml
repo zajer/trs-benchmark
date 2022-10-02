@@ -409,7 +409,9 @@ let ltsMode init_state =
 let modeFun mode initState = 
 	match mode with
 	| "tts" -> Printf.printf "TTS \n" ; ttsMode initState
-	| "ptts" -> Printf.printf "TTS-par \n" ; parttsMode initState
+	| "ptts" -> 
+		Parmap.set_default_ncores (int_of_string Sys.argv.(3) );
+		Printf.printf "TTS-par \nUtilizing %d cores" (Parmap.get_default_ncores ()) ; parttsMode initState
 	| "lts" -> Printf.printf "LTS \n" ; ltsMode initState
 	| _ -> Printf.printf "Unknown mode, exiting \n" ;;
 
